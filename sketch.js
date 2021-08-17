@@ -126,7 +126,7 @@ class Pixel{
   }
   
   update(){
-    this.lum -= 1;
+    this.lum -= 0.5;
     this.H1 += 1;
   }
   
