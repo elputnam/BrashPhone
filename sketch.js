@@ -142,7 +142,7 @@ class Pixel{
   }
   
   ghost(){
-    if (this.lifespan < 0.0){
+    if (this.lum < 0.0){
       return true;
     } else {
       return false;
