@@ -25,9 +25,11 @@ function setup() {
 
 function draw() {
   background(320, 50, 100, 10);
+  if (frameCount <= 200){
+    viralTime();
+  }
   
-  
-  if (frameCount >= 100){
+  if (frameCount >= 200){
     //screens
     for (let i = 0; i < swarm.length; i++) {
       swarm[i].run();
@@ -36,9 +38,11 @@ function draw() {
     //heartrate data mapping
     bpm = heartRate[B].value['bpm'];
     colA = map(bpm, 60, 170, 0, 360);
-    colB = map(bpm, 60, 170, 360, 0);
+    colB = map(bpm, 60, 170, 0, 100);
     len = map(bpm, 60, 170, 100, 500);
     sw = map(bpm, 60, 170, 10, 1);
+    SB1 = map(bpm, 60, 170, 40, 100);
+    SB2 = map(bpm, 60, 170, 100, 40);
     B += 1;
 
     //pixels
@@ -113,7 +117,8 @@ class Pixel{
     this.hue = random(70);
     this.lum = 50;
     this.loc = loc.copy();
-    this.len = random(10, len);
+    // this.len = random(10, len);
+    this.len = len;
   }
   run(){
     this.update();
@@ -129,8 +134,9 @@ class Pixel{
     rectMode(CENTER);
     //noStroke();
     strokeWeight(sw);
-    stroke(random(100), this.lum)
-    fill(colA, 100, 100, this.lum)
+    // stroke(random(100), this.lum)
+    stroke(colB, this.lum);
+    fill(colA, SB2, SB1, this.lum)
     //fill(this.hue, random(100), random(100), this.lum);
     square(this.loc.x, this.loc.y, this.len);
   }
@@ -141,5 +147,19 @@ class Pixel{
     } else {
       return false;
     }
+  }
+}
+
+let viralTime = function(){
+  if (frameCount%6==0){
+    let num = 20;
+    push();
+    translate(width / 2, height / 2);
+    let cir = (360 / num) * (frameCount % num);
+    rotate(radians(random(cir)));
+    noStroke();
+    fill(random(50,150), random(100), random(100));
+    circle(width*.1, 0, width*.07);
+    pop();
   }
 }
