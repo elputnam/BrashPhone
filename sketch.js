@@ -40,7 +40,7 @@ function draw() {
     colA = map(bpm, 60, 170, 0, 360);
     colB = map(bpm, 60, 170, 0, 100);
     len = map(bpm, 60, 170, 100, 500);
-    sw = map(bpm, 60, 170, 10, 1);
+    // sw = map(bpm, 60, 170, 10, 1);
     SB1 = map(bpm, 60, 170, 40, 100);
     SB2 = map(bpm, 60, 170, 100, 40);
     B += 1;
@@ -132,11 +132,11 @@ class Pixel{
   
   display(){
     rectMode(CENTER);
-    //noStroke();
-    strokeWeight(sw);
-    // stroke(random(100), this.lum)
-    stroke(colB, this.lum);
-    fill(colA, SB2, SB1, this.lum)
+    // noStroke();
+    // strokeWeight(sw);
+    stroke(random(100), this.lum)
+    // stroke(colB, this.lum);
+    fill(colA, random(100), random(100), this.lum)
     //fill(this.hue, random(100), random(100), this.lum);
     square(this.loc.x, this.loc.y, this.len);
   }
