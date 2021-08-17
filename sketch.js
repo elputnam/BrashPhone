@@ -1,7 +1,14 @@
 let swarm = [];
 let pix = [];
 let num;
+let heartRate = [];
+let B = 0;
+let list1 = [];
 
+function preload(){
+    //Load list of json file names
+    list1 = loadStrings('dataList.txt');
+}
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
@@ -10,25 +17,40 @@ function setup() {
   for (let i = 0; i < num; i++) {
     swarm.push(new Screen());
   }
+
+  //select day 
+  let day = int(random(1,131));
+  heartRate = loadJSON(list1[day]);
 }
 
 function draw() {
   background(320, 50, 100, 10);
-  for (let i = 0; i < swarm.length; i++) {
-    swarm[i].run();
-  }
-  fill(random(20, 70), 100, 100)
-  rectMode(CENTER)
-  pix.push(new Pixel(createVector(mouseX, mouseY)));
-  for(let i = pix.length - 1; i >= 0; i--){
-    let p = pix[i];
-    p.run();
-    if (p.ghost()){
-      pix.splice(i, 1);
+  
+  
+  if (frameCount >= 100){
+    //screens
+    for (let i = 0; i < swarm.length; i++) {
+      swarm[i].run();
+    }
+
+    //heartrate data mapping
+    bpm = heartRate[B].value['bpm'];
+    colA = map(bpm, 60, 170, 0, 360);
+    colB = map(bpm, 60, 170, 360, 0);
+    len = map(bpm, 60, 170, 100, 500);
+    sw = map(bpm, 60, 170, 10, 1);
+    B += 1;
+
+    //pixels
+    pix.push(new Pixel(createVector(mouseX, mouseY)));
+    for(let i = pix.length - 1; i >= 0; i--){
+      let p = pix[i];
+      p.run();
+      if (p.ghost()){
+        pix.splice(i, 1);
+     }
     }
   }
-  
-  
 }
 
 class Screen {
@@ -78,6 +100,7 @@ class Screen {
 
   display() {
     noFill();
+    strokeWeight(1);
     stroke(this.shade);
     for (let i = 0; i < this.len; i++) {
       circle(this.loc.x, this.loc.y, 5 * i);
@@ -90,7 +113,7 @@ class Pixel{
     this.hue = random(70);
     this.lum = 50;
     this.loc = loc.copy();
-    this.len = random(10, 100);
+    this.len = random(10, len);
   }
   run(){
     this.update();
@@ -105,8 +128,10 @@ class Pixel{
   display(){
     rectMode(CENTER);
     //noStroke();
+    strokeWeight(sw);
     stroke(random(100), this.lum)
-    fill(this.hue, random(100), random(100), this.lum);
+    fill(colA, 100, 100, this.lum)
+    //fill(this.hue, random(100), random(100), this.lum);
     square(this.loc.x, this.loc.y, this.len);
   }
   
