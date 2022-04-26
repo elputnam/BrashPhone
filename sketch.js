@@ -9,6 +9,7 @@ function preload(){
     //Load list of json file names
     list1 = loadStrings('dataList.txt');
 }
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
